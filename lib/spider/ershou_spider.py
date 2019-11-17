@@ -92,17 +92,22 @@ class ErShouSpider(BaseSpider):
                 name = house_elem.find('div', class_='title')
                 desc = house_elem.find('div', class_="houseInfo")
                 pic = house_elem.find('a', class_="img").find('img', class_="lj-lazy")
+                house_url = house_elem.find('a', class_="img")  # pic 换成 具有唯一性的 url 
+                position = house_elem.find('div', class_="flood").find("a")
 
                 # 继续清理数据
-                price = price.text.strip()
+                price = price.text.replace("万", "").strip()
                 name = name.text.replace("\n", "")
                 desc = desc.text.replace("\n", "").strip()
-                pic = pic.get('data-original').strip()
+                pic = "\"%s\"" % pic.get('data-original').strip() # 处理data-original中的逗号字符
+                house_url = house_url.get('href').strip()
+                position = position.text.replace("\n", "").strip()
+
                 # print(pic)
 
 
                 # 作为对象保存
-                ershou = ErShou(chinese_district, chinese_area, name, price, desc, pic)
+                ershou = ErShou(chinese_district, chinese_area, position, house_url, name, price, desc, pic)
                 ershou_list.append(ershou)
         return ershou_list
 
