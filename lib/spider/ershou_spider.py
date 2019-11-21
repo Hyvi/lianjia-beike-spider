@@ -97,8 +97,8 @@ class ErShouSpider(BaseSpider):
 
                 # 继续清理数据
                 price = price.text.replace("万", "").strip()
-                name = name.text.replace("\n", "")
-                desc = desc.text.replace("\n", "").strip()
+                name = name.text.replace("\n", "").replace(",", " ")
+                desc = desc.text.replace("\n", "").replace(",", " ").strip()
                 pic = "\"%s\"" % pic.get('data-original').strip() # 处理data-original中的逗号字符
                 house_url = house_url.get('href').strip()
                 position = position.text.replace("\n", "").strip()
