@@ -14,6 +14,7 @@ from lib.utility.date import *
 from lib.utility.path import *
 from lib.zone.area import *
 from lib.utility.log import *
+from lib.request.retry import requests_retry_session
 import lib.utility.version
 
 
@@ -62,7 +63,7 @@ class ErShouSpider(BaseSpider):
         page = 'http://{0}.{1}.com/ershoufang/{2}/'.format(city_name, SPIDER_NAME, area_name)
         print(page)  # 打印版块页面地址
         headers = create_headers()
-        response = requests.get(page, timeout=10, headers=headers)
+        response = requests_retry_session().get(page, timeout=10, headers=headers)
         html = response.content
         soup = BeautifulSoup(html, "lxml")
 
@@ -81,7 +82,7 @@ class ErShouSpider(BaseSpider):
             print(page)  # 打印每一页的地址
             headers = create_headers()
             BaseSpider.random_delay()
-            response = requests.get(page, timeout=10, headers=headers)
+            response = requests_retry_session().get(page, timeout=10, headers=headers)
             html = response.content
             soup = BeautifulSoup(html, "lxml")
 
